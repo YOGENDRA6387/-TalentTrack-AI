@@ -1,11 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light" data-theme-mode="auto">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Talent Track AI - Intelligent Resume Shortlisting Platform</title>
   <meta name="description" content="AI-powered recruitment and ATS resume shortlisting platform matching candidates using machine learning, PyMuPDF, pdfplumber, spaCy, and Scikit-Learn.">
   <link rel="stylesheet" href="css/styles.css">
+  <script>
+    // Immediate theme resolution before DOM load to avoid FOUC
+    (function() {
+      try {
+        const stored = localStorage.getItem('talent_track_theme') || 'auto';
+        let resolved = stored;
+        if (stored === 'auto') {
+          const hour = new Date().getHours();
+          resolved = (hour >= 6 && hour < 18) ? 'light' : 'dark';
+        }
+        document.documentElement.setAttribute('data-theme', resolved);
+        document.documentElement.setAttribute('data-theme-mode', stored);
+      } catch (e) {}
+    })();
+  </script>
 </head>
 <body>
 
@@ -21,13 +36,32 @@
         </div>
       </div>
       
-      <div style="display:flex; gap:12px; align-items:center;">
+      <div class="navbar-right">
+        <!-- 3-State Theme Toggle Switch (Light, Dark, Auto) -->
+        <div class="theme-switch-container">
+          <div class="theme-switch-group" role="radiogroup" aria-label="Theme Selection">
+            <button type="button" class="theme-btn" id="theme-btn-light" data-mode="light" title="Light Mode (Ivory White)">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+              <span>Light</span>
+            </button>
+            <button type="button" class="theme-btn" id="theme-btn-dark" data-mode="dark" title="Dark Mode (Warm Obsidian)">
+              <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+              <span>Dark</span>
+            </button>
+            <button type="button" class="theme-btn" id="theme-btn-auto" data-mode="auto" title="Auto Mode: 6 AM - 6 PM Light, 6 PM - 6 AM Dark">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              <span>Auto</span>
+              <span class="theme-auto-badge" id="theme-auto-indicator">Day</span>
+            </button>
+          </div>
+        </div>
+
         <div class="server-status">
           <span class="status-dot" id="server-dot"></span>
           <span id="server-text">Connecting to Backend...</span>
         </div>
-        <div class="server-status" style="border-color: rgba(16, 185, 129, 0.3);">
-          <span class="status-dot" style="background-color:#00f2fe; box-shadow:0 0 8px #00f2fe;"></span>
+        <div class="server-status">
+          <span class="status-dot" id="db-dot" style="background-color:var(--emerald-accent); box-shadow:0 0 8px var(--emerald-accent);"></span>
           <span id="db-status-text">MongoDB Ready</span>
         </div>
       </div>
@@ -93,24 +127,24 @@
               <label class="form-label">Upload Resume PDF File</label>
               <div class="dropzone" onclick="document.getElementById('resume-file-input').click();">
                 <div class="dropzone-icon">📄</div>
-                <div style="font-size:13px; font-weight:700; color:#fff;">Click to select PDF Resume</div>
+                <div class="dropzone-title">Click to select PDF Resume</div>
                 <div style="font-size:11px; color:var(--text-muted); margin-top:4px;">PyMuPDF & pdfplumber native parsing</div>
               </div>
               <input type="file" id="resume-file-input" accept=".pdf,.txt" style="display:none;">
             </div>
 
-            <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">Or select a preset candidate profile:</p>
+            <p style="font-size:12px; color:var(--text-muted); margin-bottom:10px;">Or select a preset candidate profile:</p>
 
             <div class="preset-grid">
-              <button type="button" class="preset-btn active" data-preset="ananya">Ananya Patel<br><small>Senior Dev (5.5 yrs)</small></button>
-              <button type="button" class="preset-btn" data-preset="rahul">Rahul Sharma<br><small>ML Engineer (4.0 yrs)</small></button>
-              <button type="button" class="preset-btn" data-preset="priya">Priya Verma<br><small>Full Stack (3.2 yrs)</small></button>
+              <button type="button" class="preset-btn active" data-preset="ananya">Ananya Patel<small>Senior Dev (5.5 yrs)</small></button>
+              <button type="button" class="preset-btn" data-preset="rahul">Rahul Sharma<small>ML Engineer (4.0 yrs)</small></button>
+              <button type="button" class="preset-btn" data-preset="priya">Priya Verma<small>Full Stack (3.2 yrs)</small></button>
             </div>
 
             <div class="form-group">
               <label class="form-label" for="resume-text-input">Resume Text Preview</label>
-              <textarea id="resume-text-input" class="form-textarea" style="min-height:140px; font-family:'JetBrains Mono', monospace; font-size:12px;"></textarea>
-              <div id="selected-file-name" style="font-size:12px; color:var(--cyan-accent); margin-top:4px;">Loaded sample: Ananya Patel</div>
+              <textarea id="resume-text-input" class="form-textarea" style="min-height:140px; font-family:var(--font-mono); font-size:12px;"></textarea>
+              <div id="selected-file-name" style="font-size:12px; color:var(--primary-accent); margin-top:6px; font-weight:500;">Loaded sample: Ananya Patel</div>
             </div>
 
             <button type="submit" class="btn-primary" id="analyze-btn">
@@ -132,7 +166,7 @@
               <p style="font-size:13px; color:var(--text-muted);" id="cand-meta">5.5 yrs exp • B.Tech Computer Science</p>
             </div>
             <div style="display:flex; gap:10px; align-items:center;">
-              <span style="font-size:11px; font-family:'JetBrains Mono', monospace; color:var(--text-dim);" id="db-record-tag">DB ID: Pending</span>
+              <span style="font-size:11px; font-family:var(--font-mono); color:var(--text-dim);" id="db-record-tag">DB ID: Pending</span>
               <button class="preset-btn" id="export-json-btn">📥 Export JSON</button>
               <button class="preset-btn" id="print-report-btn">🖨️ Print Report</button>
             </div>
@@ -174,7 +208,7 @@
             </div>
           </div>
 
-          <div style="background:rgba(255,255,255,0.02); border:1px solid var(--border-color); border-radius:var(--radius-sm); padding:14px; font-size:13px; color:var(--text-main);" id="verdict-summary">
+          <div class="info-subbox" id="verdict-summary">
             "Strong candidate for Senior AI / ML Engineer. Demonstrates solid Python, FastAPI, spaCy, and React.js match with 5.5 years of relevant experience."
           </div>
         </div>
@@ -205,20 +239,20 @@
           </div>
 
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:14px;">
-            <div style="background:rgba(7,9,14,0.5); border:1px solid var(--border-color); border-radius:var(--radius-sm); padding:14px;">
+            <div class="score-card" style="text-align:left; padding:14px;">
               <div style="font-size:12px; color:var(--text-muted); font-weight:700; margin-bottom:4px;">ATS LAYOUT SCORE</div>
-              <div style="font-size:24px; font-weight:800; color:var(--cyan-accent);" id="layout-score-val">85%</div>
+              <div style="font-size:24px; font-weight:800; color:var(--primary-accent);" id="layout-score-val">85%</div>
               <div style="font-size:12px; color:var(--text-dim);" id="layout-status-desc">Clean section demarcations detected</div>
             </div>
 
-            <div style="background:rgba(7,9,14,0.5); border:1px solid var(--border-color); border-radius:var(--radius-sm); padding:14px;">
+            <div class="score-card" style="text-align:left; padding:14px;">
               <div style="font-size:12px; color:var(--text-muted); font-weight:700; margin-bottom:4px;">DEEP LEARNING NEURAL MATCH</div>
-              <div style="font-size:24px; font-weight:800; color:#a855f7;" id="dl-score-val">70%</div>
+              <div style="font-size:24px; font-weight:800; color:var(--purple-accent);" id="dl-score-val">70%</div>
               <div style="font-size:12px; color:var(--text-dim);" id="dl-framework-desc">PyTorch / TensorFlow Transformer Embeddings</div>
             </div>
           </div>
 
-          <div style="font-size:12px; color:var(--text-muted); line-height:1.5;" id="layout-suggestions-container"></div>
+          <div style="font-size:12px; color:var(--text-muted); line-height:1.6;" id="layout-suggestions-container"></div>
         </div>
 
         <!-- Slide 7: Transparent Eligibility Evaluation -->
@@ -254,7 +288,7 @@
               <div id="cert-advice-container"></div>
             </div>
             <div>
-              <div style="font-size:12px; font-weight:700; color:var(--cyan-accent); margin-bottom:8px;">RECOMMENDED PORTFOLIO PROJECTS:</div>
+              <div style="font-size:12px; font-weight:700; color:var(--primary-accent); margin-bottom:8px;">RECOMMENDED PORTFOLIO PROJECTS:</div>
               <div id="project-advice-container"></div>
             </div>
           </div>

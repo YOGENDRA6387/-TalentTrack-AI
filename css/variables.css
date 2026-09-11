@@ -1,39 +1,149 @@
 :root {
-  /* Color Palette - Cyber Futuristic Grid Theme */
-  --bg-dark: #07090e;
-  --bg-card: #0e131f;
-  --bg-card-hover: #151b2c;
-  --bg-panel: #121829;
+  /* Common System Tokens */
+  --radius-xs: 6px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+  --transition-fast: 0.18s ease;
+  --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Default to Ivory Light Theme Tokens */
+  --bg-dark: #f8f6f0;               /* Warm Ivory Alabaster canvas */
+  --navbar-bg: rgba(255, 255, 255, 0.90);
+  --bg-panel: #ffffff;             /* Crisp warm ivory card */
+  --bg-card: #ffffff;
+  --bg-card-hover: #fcfaf5;
+  --bg-surface-elevated: #f3efe6;   /* Subtle warm ivory inset container */
+  --bg-input: #faf7f1;
+
+  --border-color: rgba(50, 42, 32, 0.11);
+  --border-glow: rgba(180, 83, 9, 0.25);
   
-  --border-color: rgba(255, 255, 255, 0.08);
-  --border-glow: rgba(0, 242, 254, 0.25);
+  --text-main: #1c1917;             /* Deep warm charcoal/espresso */
+  --text-muted: #57534e;            /* Warm stone */
+  --text-dim: #8a847b;
+
+  /* Warm Executive Color Palette */
+  --primary-accent: #b45309;        /* Warm Amber Bronze */
+  --primary-glow: rgba(180, 83, 9, 0.22);
+  --cyan-accent: #b45309;           /* Aliased for legacy selectors */
+  --cyan-glow: rgba(180, 83, 9, 0.22);
+
+  --secondary-accent: #7c3aed;      /* Royal Amethyst */
+  --purple-accent: #7c3aed;
+  --violet-accent: #6366f1;
+
+  --emerald-accent: #059669;
+  --emerald-glow: rgba(5, 150, 105, 0.18);
+  --amber-accent: #d97706;
+  --amber-glow: rgba(217, 119, 6, 0.18);
+  --rose-accent: #dc2626;
+  --rose-glow: rgba(220, 38, 38, 0.18);
+
+  /* Status Colors */
+  --pass-color: #059669;
+  --warn-color: #d97706;
+  --fail-color: #dc2626;
+
+  /* Decorative Ambient */
+  --brand-gradient: linear-gradient(135deg, #c2410c, #b45309);
+  --brand-title-gradient: linear-gradient(120deg, #1c1917 20%, #b45309 85%);
+  --panel-shadow: 0 10px 30px rgba(55, 40, 25, 0.05), 0 1px 3px rgba(55, 40, 25, 0.03);
+  --grid-line-color: rgba(60, 45, 30, 0.035);
+  --radial-glow-1: rgba(194, 65, 12, 0.05);
+  --radial-glow-2: rgba(124, 58, 237, 0.04);
+}
+
+/* Explicit Ivory Light Theme */
+[data-theme="light"] {
+  --bg-dark: #f8f6f0;
+  --navbar-bg: rgba(255, 255, 255, 0.90);
+  --bg-panel: #ffffff;
+  --bg-card: #ffffff;
+  --bg-card-hover: #fcfaf5;
+  --bg-surface-elevated: #f3efe6;
+  --bg-input: #faf7f1;
+
+  --border-color: rgba(50, 42, 32, 0.11);
+  --border-glow: rgba(180, 83, 9, 0.25);
   
-  --text-main: #f1f5f9;
-  --text-muted: #94a3b8;
-  --text-dim: #64748b;
-  
-  /* Brand Accent Colors */
-  --cyan-accent: #00f2fe;
-  --cyan-glow: rgba(0, 242, 254, 0.3);
-  --purple-accent: #7928ca;
-  --violet-accent: #3b82f6;
+  --text-main: #1c1917;
+  --text-muted: #57534e;
+  --text-dim: #8a847b;
+
+  --primary-accent: #b45309;
+  --primary-glow: rgba(180, 83, 9, 0.22);
+  --cyan-accent: #b45309;
+  --cyan-glow: rgba(180, 83, 9, 0.22);
+
+  --secondary-accent: #7c3aed;
+  --purple-accent: #7c3aed;
+  --violet-accent: #6366f1;
+
+  --emerald-accent: #059669;
+  --emerald-glow: rgba(5, 150, 105, 0.18);
+  --amber-accent: #d97706;
+  --amber-glow: rgba(217, 119, 6, 0.18);
+  --rose-accent: #dc2626;
+  --rose-glow: rgba(220, 38, 38, 0.18);
+
+  --pass-color: #059669;
+  --warn-color: #d97706;
+  --fail-color: #dc2626;
+
+  --brand-gradient: linear-gradient(135deg, #c2410c, #b45309);
+  --brand-title-gradient: linear-gradient(120deg, #1c1917 20%, #b45309 85%);
+  --panel-shadow: 0 10px 30px rgba(55, 40, 25, 0.05), 0 1px 3px rgba(55, 40, 25, 0.03);
+  --grid-line-color: rgba(60, 45, 30, 0.035);
+  --radial-glow-1: rgba(194, 65, 12, 0.05);
+  --radial-glow-2: rgba(124, 58, 237, 0.04);
+}
+
+/* Warm Dark Theme (Obsidian & Ivory Accents) */
+[data-theme="dark"] {
+  --bg-dark: #0f1115;               /* Deep warm obsidian */
+  --navbar-bg: rgba(22, 25, 32, 0.88);
+  --bg-panel: #171a22;
+  --bg-card: #1a1e28;
+  --bg-card-hover: #212633;
+  --bg-surface-elevated: #12141a;   /* Deep inset containers */
+  --bg-input: #12141a;
+
+  --border-color: rgba(255, 248, 235, 0.08);
+  --border-glow: rgba(245, 158, 11, 0.25);
+
+  --text-main: #fdfbf7;             /* Soft Ivory white text */
+  --text-muted: #a8a29e;            /* Warm stone */
+  --text-dim: #716c65;
+
+  --primary-accent: #f59e0b;        /* Luminous Warm Amber Gold */
+  --primary-glow: rgba(245, 158, 11, 0.25);
+  --cyan-accent: #f59e0b;           /* Aliased for legacy selectors */
+  --cyan-glow: rgba(245, 158, 11, 0.25);
+
+  --secondary-accent: #c084fc;      /* Luminous Violet */
+  --purple-accent: #a855f7;
+  --violet-accent: #818cf8;
+
   --emerald-accent: #10b981;
   --emerald-glow: rgba(16, 185, 129, 0.2);
   --amber-accent: #f59e0b;
   --amber-glow: rgba(245, 158, 11, 0.2);
   --rose-accent: #ef4444;
   --rose-glow: rgba(239, 68, 68, 0.2);
-  
-  /* Status Colors */
+
   --pass-color: #10b981;
   --warn-color: #f59e0b;
   --fail-color: #ef4444;
 
-  /* Layout & Spacing */
-  --radius-sm: 8px;
-  --radius-md: 14px;
-  --radius-lg: 20px;
-  --transition-fast: 0.2s ease;
-  --transition-smooth: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-  --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  --brand-gradient: linear-gradient(135deg, #f59e0b, #d97706);
+  --brand-title-gradient: linear-gradient(90deg, #ffffff 40%, #f59e0b);
+  --panel-shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
+  --grid-line-color: rgba(255, 248, 235, 0.025);
+  --radial-glow-1: rgba(245, 158, 11, 0.06);
+  --radial-glow-2: rgba(168, 85, 247, 0.05);
 }
