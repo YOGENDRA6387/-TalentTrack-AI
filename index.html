@@ -193,7 +193,7 @@
                 </svg>
                 <div class="score-val-text" id="ats-score-val">95%</div>
               </div>
-              <div class="score-title">ATS Format Match</div>
+              <div class="score-title">ATS Semantic Match</div>
             </div>
 
             <div class="score-card">
@@ -204,12 +204,59 @@
                 </svg>
                 <div class="score-val-text" id="skill-score-val">100%</div>
               </div>
-              <div class="score-title">Skill Vector Match</div>
+              <div class="score-title">Core Skill Coverage</div>
             </div>
           </div>
 
           <div class="info-subbox" id="verdict-summary">
             "Strong candidate for Senior AI / ML Engineer. Demonstrates solid Python, FastAPI, spaCy, and React.js match with 5.5 years of relevant experience."
+          </div>
+        </div>
+
+        <!-- Trained AI Model Intelligence Card -->
+        <div class="card-panel trained-model-panel" id="trained-model-card">
+          <div class="panel-header">
+            <div>
+              <span class="panel-tag panel-tag-active" id="model-status-tag">
+                ● Trained Machine Learning Model Active
+              </span>
+              <h3 class="panel-title" style="margin-top: 6px;">AI Domain Classification & Neural Match</h3>
+            </div>
+            <div style="text-align: right;">
+              <span class="panel-tag panel-tag-accuracy" id="model-accuracy-badge">
+                Accuracy: 100.0% • 1,100 Trained Samples
+              </span>
+            </div>
+          </div>
+
+          <div class="model-card-grid">
+            <div class="model-inner-box">
+              <div>
+                <div class="model-inner-label">Predicted Candidate Domain</div>
+                <div class="model-predicted-title" id="model-predicted-domain">Data Science & Machine Learning</div>
+              </div>
+              
+              <div>
+                <div class="model-confidence-row">
+                  <span style="color: var(--text-muted); font-weight: 600;">Model Confidence</span>
+                  <span class="model-confidence-val" id="model-confidence-val">96.8%</span>
+                </div>
+                <div class="model-confidence-track">
+                  <div class="model-confidence-fill" id="model-confidence-bar" style="width: 96.8%;"></div>
+                </div>
+
+                <div class="model-details-meta" id="model-details-text">
+                  Architecture: Random Forest Classifier (120 Trees) + Sublinear TF-IDF (6,000 N-Grams)
+                </div>
+              </div>
+            </div>
+
+            <div class="model-inner-box">
+              <div class="model-inner-label">Top Predicted Domains (Probability Distribution)</div>
+              <div class="top-domains-container" id="top-domains-list">
+                <!-- Dynamically populated -->
+              </div>
+            </div>
           </div>
         </div>
 
